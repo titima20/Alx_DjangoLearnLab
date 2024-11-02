@@ -1,3 +1,5 @@
+echo 'from bookshelf.models import Book
+
 ````markdown:LibraryProject/delete.md
 # Delete Operation
 
