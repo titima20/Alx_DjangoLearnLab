@@ -2,7 +2,8 @@ from typing import Any
 
 # Django imports
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, TemplateView, DeleteView, UpdateView
+from django.views.generic import ListView, TemplateView, DeleteView, UpdateView
+from django.views.generic.detail import DetailView
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
