@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, PermissionRequiredMi
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import permission_required
 
 # App-specific imports
 from .models import Author, Book, Librarian, UserProfile
@@ -161,4 +162,19 @@ class DeleteBookView(PermissionRequiredMixin, DeleteView):
     template_name = 'relationship_app/deletebookview.html'
     permission_required = ["relationship_app.delete_book"]
     success_url = reverse_lazy('booklist')  # Redirect to book list or relevant page after deleting
-    
+
+
+@permission_required('relationship_app.can_add_book')
+def add_book(request):
+    # Add book logic here
+    pass
+
+@permission_required('relationship_app.can_change_book')
+def edit_book(request, pk):
+    # Edit book logic here
+    pass
+
+@permission_required('relationship_app.can_delete_book')
+def delete_book(request, pk):
+    # Delete book logic here
+    pass
