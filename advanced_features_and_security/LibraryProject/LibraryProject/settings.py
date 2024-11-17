@@ -153,3 +153,7 @@ SECURE_HSTS_PRELOAD = True  # Allow site to be preloaded by browsers
 
 #csp settings
 CSP_DEFAULT_SRC = ("'self'",)  # Allow content only from the same origin
+
+
+# Security Headers
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
