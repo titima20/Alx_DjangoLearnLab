@@ -16,4 +16,7 @@ urlpatterns = [
     path('book_add/', views.AddBookView.as_view(), name='addbook'),
     path('book_edit/', views.EditBookView.as_view(), name='editbook'),
     path('book_delete', views.DeleteBookView.as_view(), name='deletebook')
+        path('add_book/', views.add_book, name='add_book'),
+    path('edit_book/<int:pk>/', views.edit_book, name='edit_book'),
+    path('delete_book/<int:pk>/', views.delete_book, name='delete_book'),
 ]
