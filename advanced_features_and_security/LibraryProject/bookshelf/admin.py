@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Author, Book, CustomUser, Review
+from .models import Author, Book, CustomUser, Review, CustomUserAdmin
 
 # Register your models here.
 @admin.register(Author)
@@ -20,3 +20,4 @@ class BookAdmin(admin.ModelAdmin):
 
 #registering the new CustomUserModel
 admin.site.register(CustomUser, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
