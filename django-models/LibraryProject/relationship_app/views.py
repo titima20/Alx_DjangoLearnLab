@@ -4,7 +4,7 @@ from typing import Any
 from django.shortcuts import render
 from django.views.generic import ListView, TemplateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
-
+from django.contrib.auth import login
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
