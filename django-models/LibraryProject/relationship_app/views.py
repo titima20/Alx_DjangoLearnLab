@@ -12,11 +12,23 @@ from django.contrib.auth.decorators import login_required, user_passes_test, per
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import UserPassesTestMixin, PermissionRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 # App-specific imports
 from .models import Author, Book, Librarian, UserProfile
 from .models import Library
 from .forms import BookForm
+class RegisterView(CreateView):
+    form_class = UserCreationForm()
+    success_url = reverse_lazy('login')
+    template_name = 'relationship_app/register.html'
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
 
 class LibraryDetailView(DetailView):
     model = Library
