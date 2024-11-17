@@ -2,9 +2,15 @@ from typing import Any
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager
 from LibraryProject import settings
+from django.contrib.auth.models import BaseUserManager
 
 # Create your models here.
+class CustomUserManager(BaseUserManager):
+    def create_user(self, username: str, email: str | None = ..., password: str | None = ...,**extra_fields: Any) -> Any:
+        return super().create_user(username, email, password, **extra_fields)
 
+    def create_superuser(self, username: str, email: str | None, password: str | None,**extra_fields: Any) -> Any:
+        return super().create_superuser(username, email, password, **extra_fields)
 #Creating a new Custom User Model and it's manager
 class CustomUserManager(UserManager):
     def create_user(self, username: str, email: str | None = ..., password: str | None = ...,**extra_fields: Any) -> Any:
