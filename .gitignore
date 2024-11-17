@@ -1,4 +1,0 @@
-#ignore __pycache__ directories
-**/__pycache__
-**.env
-**/relationship_app
