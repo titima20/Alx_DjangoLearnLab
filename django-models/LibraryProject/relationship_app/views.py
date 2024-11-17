@@ -12,7 +12,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import UserPassesTestMixin, PermissionRequiredMixin
 
 # App-specific imports
-from .models import Author, Book, Librarian, Library, UserProfile
+from .models import Author, Book, Librarian, UserProfile
+from .models import Library
 from .forms import BookForm
 
 class LibraryDetailView(DetailView):
