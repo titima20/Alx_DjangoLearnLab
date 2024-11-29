@@ -10,6 +10,7 @@ class BookAPITests(APITestCase):
         # Create test user
         self.user = User.objects.create_user(username='testuser', password='testpass123')
         self.client = APIClient()
+        self.client.login(username='testuser', password='testpass123')
         
         # Create test author
         self.author = Author.objects.create(name='Test Author')
@@ -20,6 +21,7 @@ class BookAPITests(APITestCase):
             publication_year=2023,
             author=self.author
         )
+
 
     def test_list_books(self):
         """Test retrieving a list of books"""
