@@ -99,3 +99,20 @@ article a {
     text-decoration: none;
 }
 
+.comments {
+    margin-top: 30px;
+}
+
+.comment {
+    padding: 15px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.comment small {
+    color: #666;
+    display: block;
+    margin-top: 5px;
+}
+
