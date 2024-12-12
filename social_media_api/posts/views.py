@@ -20,13 +20,21 @@ class StandardResultsSetPagination(PageNumberPagination):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
-    pagination_class = StandardResultsSetPagination
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title', 'content']
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+    @action(detail=True, methods=['POST'])
+    def like(self, request, pk=None):
+        post = get_object_or_404(Post, pk=pk)
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+        if created:
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb='liked your post',
+                target=post
+            )
+            return Response({'status': 'post liked'})
+        return Response({'status': 'already liked'})
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
