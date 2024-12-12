@@ -1,9 +1,11 @@
-from rest_framework import viewsets, filters, permissions
-from .models import Post, Comment
+from rest_framework import viewsets, filters, permissions, generics
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
-from rest_framework.pagination import PageNumberPagination
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from notifications.models import Notification
+
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
@@ -24,7 +26,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['POST'])
     def like(self, request, pk=None):
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         like, created = Like.objects.get_or_create(user=request.user, post=post)
         if created:
             Notification.objects.create(
