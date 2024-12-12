@@ -5,6 +5,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from .serializers import UserSerializer
+from rest_framework.permissions import IsAuthenticated
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -32,3 +34,19 @@ def login(request):
             'user': UserSerializer(user).data
         })
     return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def follow_user(request, user_id):
+    user_to_follow = get_object_or_404(CustomUser, id=user_id)
+    if request.user != user_to_follow:
+        request.user.following.add(user_to_follow)
+        return Response({'status': 'following'}, status=status.HTTP_200_OK)
+    return Response({'error': 'Cannot follow yourself'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unfollow_user(request, user_id):
+    user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
+    request.user.following.remove(user_to_unfollow)
+    return Response({'status': 'unfollowed'}, status=status.HTTP_200_OK)
