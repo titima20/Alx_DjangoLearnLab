@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-krzktk_v)%n^=)mlos4_hn!2gg9)2(o60%2(9ugkrwmj(0)i5o'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['your-domain.com', 'www.your-domain.com']
 
 
 # Application definition
@@ -80,17 +81,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
+# Security Settings
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -126,9 +137,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Media files
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
