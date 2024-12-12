@@ -3,6 +3,10 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from .models import CustomUser
 
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=150)
     email = serializers.CharField(max_length=255)
@@ -23,6 +27,5 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('confirm_password')
         user = get_user_model().objects.create_user(**validated_data)
-        token = Token.objects.create(user=user)
-        validated_data['token'] = token.key
+        Token.objects.create(user=user)
         return user
