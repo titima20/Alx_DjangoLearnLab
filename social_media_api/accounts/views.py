@@ -8,6 +8,9 @@ from django.shortcuts import get_object_or_404
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from .models import CustomUser
+from rest_framework import generics, permissions, status
+
+
 
 
 @api_view(['POST'])
